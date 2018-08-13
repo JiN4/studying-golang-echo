@@ -1,2 +1,2 @@
 # studying-golang-echo
-goのweb-frameworkにechoを使ってみる
+goのweb-framework.echoを使ってみる
