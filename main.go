@@ -11,12 +11,13 @@ func main() {
 	// Echoのインスタンス作る
 	e := echo.New()
 
-	// 全てのリクエストで差し込みたいミドルウェア（ログとか）はここ
-	e.Use(middleware.Logger())
+	// ミドルウェア
+	e.Use(middleware.Logger()) //HTTPのリクエストのログを出力
 	e.Use(middleware.Recover())
 
 	// ルーティング
 	e.GET("/hello", handler.MainPage())
+	e.Get("/hello/:username", handle.MainPage()) //セミコロンの場所がプレースホルダ
 
 	// サーバー起動
 	e.Start(":8000") //ポート番号8000指定
