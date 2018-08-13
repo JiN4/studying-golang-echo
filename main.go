@@ -18,8 +18,10 @@ func main() {
 	//e.Use(interceptor.BasicAuth())
 
 	// ルーティング
-	e.GET("/hello", handler.MainPage())                        //文字出力のみ
-	e.GET("/app", handler.MainPage(), interceptor.BasicAuth()) //Basic認証
+	e.GET("/hello", handler.HelloPage())                          //文字出力のみ
+	e.GET("/Basic", handler.HelloPage(), interceptor.BasicAuth()) //Basic認証
+	e.GET("/Json", handler.JsonPage())                            //json
+
 	// サーバー起動
 	e.Start(":8000") //ポート番号8000指定
 }
