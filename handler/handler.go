@@ -1,8 +1,10 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
+	"github.com/gorilla/websocket"
 	"github.com/labstack/echo"
 )
 
@@ -20,5 +22,46 @@ func JsonPage() echo.HandlerFunc {
 			"hoge": "fuga",
 		}
 		return c.JSON(http.StatusOK, jsonMap)
+	}
+}
+
+func JPage() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		return c.Redirect(http.StatusTemporaryRedirect, "http://example.com")
+	}
+}
+
+func WebSocket() echo.HandlerFunc {
+	var (
+		upgrader = websocket.Upgrader{}
+	)
+	return func(c echo.Context) error {
+		ws, err := upgrader.Upgrade(c.Response(), c.Request(), nil)
+		if err != nil {
+			return err
+		}
+		defer ws.Close()
+
+		for {
+			// Write
+			err := ws.WriteMessage(websocket.TextMessage, []byte("Hello, Client!"))
+			if err != nil {
+				c.Logger().Error(err)
+			}
+
+			// Read
+			_, msg, err := ws.ReadMessage()
+			if err != nil {
+				c.Logger().Error(err)
+			}
+			fmt.Printf("%s\n", msg)
+		}
+	}
+}
+
+// HandleIndexGet は Index のGet時のHTMLデータ生成処理を行います。
+func HandleIndexGet() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		return c.Render(http.StatusOK, "index", "World")
 	}
 }
