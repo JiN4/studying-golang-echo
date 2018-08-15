@@ -31,8 +31,10 @@ func init() {
 func loadTemplates() {
 	var baseTemplate = "templates/layout.html"
 	templates = make(map[string]*template.Template)
-	templates["index"] = template.Must( //正当性のチェック
+	templates["hello"] = template.Must( //正当性のチェック
 		template.ParseFiles(baseTemplate, "./templates/hello.html")) //layout.htmlにhello.htmlを埋め込んだものをtemplates["index"]に格納
+	templates["hello_form"] = template.Must(
+		template.ParseFiles(baseTemplate, "templates/hello_form.html"))
 }
 
 func main() {
@@ -58,7 +60,9 @@ func main() {
 	e.GET("/json", handler.JsonPage())                            //json
 	//e.GET("/websocket", handler.WebSocket())
 
-	e.GET("/index", handler.HandleIndexGet())
+	e.GET("/hello2", handler.HandleHelloGet())
+	e.POST("/hello2", handler.HandleHelloPost())
+	e.GET("/hello_form", handler.HandleHelloFormGet())
 
 	// サーバー起動
 	e.Start(":8000") //ポート番号8000指定

@@ -59,9 +59,24 @@ func WebSocket() echo.HandlerFunc {
 	}
 }
 
-// HandleIndexGet は Index のGet時のHTMLデータ生成処理を行います。
-func HandleIndexGet() echo.HandlerFunc {
+// HandleHelloGet は hello2 のGet時のHTMLデータ生成処理を行います。
+func HandleHelloGet() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		return c.Render(http.StatusOK, "index", "World")
+		greetingto := c.QueryParam("greetingto")
+		return c.Render(http.StatusOK, "hello", greetingto)
+	}
+}
+
+func HandleHelloPost() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		greetingto := c.FormValue("greetingto")
+		return c.Render(http.StatusOK, "hello", greetingto)
+	}
+}
+
+// HandleHelloFormGet は /hello_form のGet時のHTMLデータ生成処理を行います。
+func HandleHelloFormGet() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		return c.Render(http.StatusOK, "hello_form", nil)
 	}
 }
